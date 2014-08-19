@@ -1,3 +1,6 @@
+<%= render 'pages/home' if !user_signed_in? %>
+
+<!-- <div id="lessons" class="transitions-enabled">
 <h1>Listing lessons</h1>
 
 <table>
@@ -5,7 +8,6 @@
     <tr>
       <th>Title</th>
       <th>Description</th>
-      <th colspan="3"></th>
     </tr>
   </thead>
 
@@ -22,6 +24,6 @@
   </tbody>
 </table>
 
-<br>
+</div>
 
-<%= link_to 'New Lesson', new_lesson_path %>
+<%= link_to 'New Lesson', new_lesson_path %> -->

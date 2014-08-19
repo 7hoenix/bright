@@ -1,6 +1,7 @@
 class LessonsController < ApplicationController
   before_action :set_lesson, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :correct_user, only: [:edit, :update, :destroy]
 
   def index
     @lessons = Lesson.all
@@ -10,14 +11,14 @@ class LessonsController < ApplicationController
   end
 
   def new
-    @lesson = Lesson.new
+    @lesson = current_user.lessons.build
   end
 
   def edit
   end
 
   def create
-    @lesson = Lesson.new(lesson_params)
+    @lesson = current_user.lessons.build(lesson_params)
       if @lesson.save
         redirect_to @lesson, notice: 'Lesson was successfully created.'
       else
@@ -44,8 +45,12 @@ class LessonsController < ApplicationController
       @lesson = Lesson.find(params[:id])
     end
 
+    def correct_user
+      @lesson = current_user.lessons.find_by(id: params[:id])
+      redirect_to lessons_path, notice: "Not authorized to edit this lesson" if @lesson.nil?
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def lesson_params
-      params.require(:lesson).permit(:title, :description)
+      params.require(:lesson).permit(:title, :description, :video)
     end
 end
